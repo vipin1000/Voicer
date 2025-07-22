@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.hero {
+  background: linear-gradient(120deg, #007bff 0%, #00c6ff 100%);
+  color: #fff;
+  padding: 4rem 2rem 3rem 2rem;
+  text-align: center;
+  border-radius: 1.5rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  animation: fadeInDown 1s;
+}
+.hero p {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  animation: fadeInUp 1.2s;
+}
+.cta-btn {
+  background: #fff;
+  color: #007bff;
+  font-weight: bold;
+  border: none;
+  padding: 0.9rem 2.5rem;
+  border-radius: 2rem;
+  font-size: 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  animation: fadeInUp 1.4s;
+}
+.cta-btn:hover {
+  background: #007bff;
+  color: #fff;
+  transform: scale(1.05);
+}
+.animated-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.card-anim {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 2rem 1.5rem;
+  width: 320px;
+  min-height: 220px;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0;
+  transform: translateY(40px);
+}
+.card-anim.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.card-anim h3 {
+  color: #007bff;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+.card-anim p {
+  color: #333;
+  font-size: 1.08rem;
+}
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<div class="hero">
+  <h1>Welcome to Voicer</h1>
+  <p>The digital marketplace for voiceover talent and clients. Discover, connect, and create magic with voices from around the world.</p>
+  <a href="/discover/" class="cta-btn">Discover Talent</a>
+</div>
+<div class="animated-cards">
+  <div class="card-anim">
+    <h3>🎤 Find Your Voice</h3>
+    <p>Browse a diverse pool of professional voiceover artists ready to bring your project to life. From commercials to audiobooks, find the perfect match for your needs.</p>
+  </div>
+  <div class="card-anim">
+    <h3>🤝 Seamless Collaboration</h3>
+    <p>Connect with talent, share scripts, and manage projects all in one place. Our platform makes communication and delivery effortless.</p>
+  </div>
+  <div class="card-anim">
+    <h3>🚀 Fast & Secure</h3>
+    <p>Enjoy quick turnaround times and secure payments. Your creative journey is safe and efficient with Voicer.</p>
+  </div>
+  <div class="card-anim">
+    <h3>🌍 Global Community</h3>
+    <p>Join a vibrant community of clients and artists from across the globe. Share feedback, build relationships, and grow together.</p>
+  </div>
+</div>
+<script>
+// Animate cards on scroll
+function animateCards() {
+  const cards = document.querySelectorAll('.card-anim');
+  const triggerBottom = window.innerHeight * 0.95;
+  cards.forEach(card => {
+    const cardTop = card.getBoundingClientRect().top;
+    if(cardTop < triggerBottom) {
+      card.classList.add('visible');
+    }
+  });
+}
+window.addEventListener('scroll', animateCards);
+window.addEventListener('load', animateCards);
+</script>
+{% endblock %}

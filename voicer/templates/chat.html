@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.hero {
+  background: linear-gradient(120deg, #007bff 0%, #00c6ff 100%);
+  color: #fff;
+  padding: 3rem 2rem 2rem 2rem;
+  text-align: center;
+  border-radius: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.chat-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 2rem 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: fadeInUp 0.8s;
+}
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  max-height: 200px;
+}
+.message {
+  background: #f7f7f7;
+  border-radius: 0.8rem;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  width: fit-content;
+  max-width: 80%;
+}
+.message.user {
+  background: #007bff;
+  color: #fff;
+  margin-left: auto;
+}
+.chat-input {
+  display: flex;
+  gap: 1rem;
+}
+.chat-input input {
+  flex: 1;
+  border-radius: 2rem;
+  border: 1px solid #ccc;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+}
+.chat-input button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.7rem 2rem;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+.chat-input button:hover {
+  background: #0056b3;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<div class="hero">
+  <h1>Chat Room</h1>
+  <p>Connect and collaborate in real time with other users.</p>
+</div>
+<div class="chat-card">
+  <div class="chat-messages">
+    <div class="message">Hello! 👋</div>
+    <div class="message user">Hi there! How can I help you?</div>
+    <div class="message">I'm looking for a voiceover artist for my project.</div>
+    <div class="message user">Great! I can help you with that.</div>
+  </div>
+  <form class="chat-input">
+    <input type="text" placeholder="Type your message..." disabled>
+    <button type="submit" disabled>Send</button>
+  </form>
+</div>
+{% endblock %} 

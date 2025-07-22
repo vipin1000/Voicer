@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.hero {
+  background: linear-gradient(120deg, #007bff 0%, #00c6ff 100%);
+  color: #fff;
+  padding: 3rem 2rem 2rem 2rem;
+  text-align: center;
+  border-radius: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.register-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s;
+}
+.register-card h2 {
+  color: #007bff;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+.register-card label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.register-card input, .register-card select {
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+.register-card button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.2s;
+  width: 100%;
+}
+.register-card button:hover {
+  background: #0056b3;
+}
+.register-card p {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<div class="hero">
+  <h1>Register</h1>
+  <p>Create your account and join the Voicer community!</p>
+</div>
+<div class="register-card">
+  {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  <h2>Register</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Register</button>
+  </form>
+  <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+</div>
+{% endblock %} 

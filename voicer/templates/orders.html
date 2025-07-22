@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.hero {
+  background: linear-gradient(120deg, #007bff 0%, #00c6ff 100%);
+  color: #fff;
+  padding: 3rem 2rem 2rem 2rem;
+  text-align: center;
+  border-radius: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.orders-list {
+  max-height: 350px;
+  overflow-y: auto;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  margin: 0 auto 2rem auto;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: fadeInUp 0.8s;
+}
+.order-card {
+  background: #f7f7f7;
+  border-radius: 0.8rem;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.order-card h4 {
+  color: #007bff;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.order-card p {
+  color: #333;
+  margin: 0.2rem 0;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<div class="hero">
+  <h1>Your Orders</h1>
+  <p>Track and manage your voiceover orders easily.</p>
+</div>
+<div class="orders-list">
+  <div class="order-card">
+    <h4>Order #1001</h4>
+    <p><strong>Service:</strong> Warm British Voiceover</p>
+    <p><strong>Status:</strong> Completed</p>
+    <p><strong>Buyer:</strong> Sara</p>
+  </div>
+  <div class="order-card">
+    <h4>Order #1002</h4>
+    <p><strong>Service:</strong> Commercial Promo Voice</p>
+    <p><strong>Status:</strong> In Progress</p>
+    <p><strong>Buyer:</strong> Alex</p>
+  </div>
+  <div class="order-card">
+    <h4>Order #1003</h4>
+    <p><strong>Service:</strong> Audiobook Narration</p>
+    <p><strong>Status:</strong> Pending</p>
+    <p><strong>Buyer:</strong> Jamie</p>
+  </div>
+</div>
+{% endblock %} 

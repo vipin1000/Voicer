@@ -1,0 +1,179 @@
+
+{% extends "base.html" %}
+{% block content %}
+<style>
+.discover-hero {
+  background: linear-gradient(120deg, #007bff 0%, #00c6ff 100%);
+  color: #fff;
+  padding: 3rem 2rem 2rem 2rem;
+  text-align: center;
+  border-radius: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+.discover-btns {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.discover-btn {
+  background: #fff;
+  color: #007bff;
+  font-weight: bold;
+  border: none;
+  padding: 0.8rem 2.2rem;
+  border-radius: 2rem;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+.discover-btn.active, .discover-btn:hover {
+  background: #007bff;
+  color: #fff;
+  transform: scale(1.05);
+}
+.scrollable-list {
+  max-height: 350px;
+  overflow-y: auto;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  margin: 0 auto 2rem auto;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s, transform 0.7s;
+}
+.scrollable-list.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.profile-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  background: #f7f7f7;
+  border-radius: 0.8rem;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  animation: fadeInUp 0.8s;
+}
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #007bff;
+}
+.profile-info {
+  flex: 1;
+}
+.profile-info h4 {
+  margin: 0 0 0.2rem 0;
+  color: #007bff;
+  font-weight: 700;
+}
+.profile-info p {
+  margin: 0;
+  color: #333;
+  font-size: 1.02rem;
+}
+.profile-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.profile-link:hover .profile-card {
+  box-shadow: 0 8px 32px rgba(0,123,255,0.18);
+  transform: scale(1.03);
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<div class="discover-hero">
+  <h1>Discover Talent & Clients</h1>
+  <p>Browse our vibrant community of voiceover sellers and buyers. Click a button to explore profiles!</p>
+</div>
+<div class="discover-btns">
+  <button class="discover-btn active" id="show-sellers">Sellers</button>
+  <button class="discover-btn" id="show-buyers">Buyers</button>
+</div>
+<div id="sellers-list" class="scrollable-list visible">
+  {% for people in sellers %}
+    <a href="{% url 'public_profile' people.id %}" class="profile-link">
+      <div class="profile-card">
+        <div class="profile-avatar">{{ people.user.first_name|slice:":1" }}{{ people.user.last_name|slice:":1" }}</div>
+        <div class="profile-info">
+          <h4>{{ people.user.first_name }} {{ people.user.last_name }}</h4>
+          <p><strong>Username:</strong> {{ people.user.username }}</p>
+          <p><strong>Email:</strong> {{ people.user.email }}</p>
+          <p>{{ people.bio }}</p>
+        </div>
+      </div>
+    </a>
+  {% empty %}
+    <p>No sellers found.</p>
+  {% endfor %}
+</div>
+<div id="buyers-list" class="scrollable-list" style="display:none;">
+  {% for people in buyers %}
+    <a href="{% url 'public_profile' people.id %}" class="profile-link">
+      <div class="profile-card">
+        <div class="profile-avatar">{{ people.user.first_name|slice:":1" }}{{ people.user.last_name|slice:":1" }}</div>
+        <div class="profile-info">
+          <h4>{{ people.user.first_name }} {{ people.user.last_name }}</h4>
+          <p><strong>Username:</strong> {{ people.user.username }}</p>
+          <p><strong>Email:</strong> {{ people.user.email }}</p>
+          <p>{{ people.bio }}</p>
+        </div>
+      </div>
+    </a>
+  {% empty %}
+    <p>No buyers found.</p>
+  {% endfor %}
+</div>
+<script>
+// Button toggle logic
+const sellersBtn = document.getElementById('show-sellers');
+const buyersBtn = document.getElementById('show-buyers');
+const sellersList = document.getElementById('sellers-list');
+const buyersList = document.getElementById('buyers-list');
+
+sellersBtn.addEventListener('click', function() {
+  sellersBtn.classList.add('active');
+  buyersBtn.classList.remove('active');
+  sellersList.style.display = 'flex';
+  buyersList.style.display = 'none';
+  setTimeout(() => sellersList.classList.add('visible'), 10);
+  buyersList.classList.remove('visible');
+});
+buyersBtn.addEventListener('click', function() {
+  buyersBtn.classList.add('active');
+  sellersBtn.classList.remove('active');
+  buyersList.style.display = 'flex';
+  sellersList.style.display = 'none';
+  setTimeout(() => buyersList.classList.add('visible'), 10);
+  sellersList.classList.remove('visible');
+});
+window.addEventListener('load', function() {
+  sellersList.classList.add('visible');
+});
+</script>
+{% endblock %} 

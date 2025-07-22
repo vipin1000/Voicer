@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.hero {
+  background: linear-gradient(120deg, #007bff 0%, #00c6ff 100%);
+  color: #fff;
+  padding: 3rem 2rem 2rem 2rem;
+  text-align: center;
+  border-radius: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.profile-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 400px;
+  margin: 0 auto;
+  animation: fadeInUp 0.8s;
+  text-align: center;
+}
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  object-fit: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: #007bff;
+  margin: 0 auto 1rem auto;
+}
+.profile-card h2 {
+  color: #007bff;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.profile-card p {
+  color: #333;
+  margin: 0.2rem 0;
+}
+.audio-sample-section {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+.audio-sample-section label {
+  font-weight: 600;
+  color: #007bff;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+.audio-sample-player {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+</style>
+<div class="hero">
+  <h1>{{ profile.user.first_name }} {{ profile.user.last_name }}'s Profile</h1>
+  <p>See details and listen to their sample.</p>
+</div>
+<div class="profile-card">
+  <div class="profile-avatar">{{ profile.user.first_name|slice:':1' }}{{ profile.user.last_name|slice:':1' }}</div>
+  <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+  <p><strong>Username:</strong> {{ profile.user.username }}</p>
+  <p><strong>Email:</strong> {{ profile.user.email }}</p>
+  <p><strong>Role:</strong> {{ profile.role|title }}</p>
+  <p><strong>Bio:</strong> {{ profile.bio }}</p>
+  <div class="audio-sample-section">
+    <label>Audio Sample</label>
+    {% if profile.voiceoversample %}
+      <audio class="audio-sample-player" controls>
+        <source src="{{ profile.voiceoversample.url }}" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    {% else %}
+      <div style="font-size:0.95rem; color:#888; margin-top:0.3rem;">No audio sample uploaded.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %} 
