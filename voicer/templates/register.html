@@ -1,84 +1,156 @@
 {% extends "base.html" %}
 {% block content %}
 <style>
+/* Hero section */
 .hero {
   background: linear-gradient(120deg, #007bff 0%, #00c6ff 100%);
   color: #fff;
-  padding: 3rem 2rem 2rem 2rem;
+  padding: 3rem 2rem;
   text-align: center;
   border-radius: 1.5rem;
   margin-bottom: 2rem;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
+
+/* Page layout */
+.page-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 2rem 3rem;
+  box-sizing: border-box;
+}
+
+/* Registration card styling */
 .register-card {
   background: #fff;
   border-radius: 1rem;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
-  padding: 2.5rem 2rem 2rem 2rem;
-  max-width: 400px;
-  margin: 0 auto;
-  animation: fadeInUp 0.8s;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 960px;
+  animation: fadeInUp 0.8s ease;
+  box-sizing: border-box;
 }
+
 .register-card h2 {
   color: #007bff;
   font-weight: 700;
   margin-bottom: 1.5rem;
+  text-align: center;
 }
+
+/* Form styles */
 .register-card label {
   font-weight: 500;
   margin-bottom: 0.5rem;
+  display: block;
 }
-.register-card input, .register-card select {
-  padding: 0.7rem;
+
+.register-card input,
+.register-card select,
+.register-card textarea {
+  padding: 0.75rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
   width: 100%;
+  box-sizing: border-box;
+  background-color: #fdfdfd;
 }
+
+.register-card input:focus,
+.register-card select:focus,
+.register-card textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
 .register-card button {
   background: #007bff;
   color: #fff;
   border: none;
   padding: 0.75rem;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   margin-top: 1rem;
-  transition: background 0.2s;
+  transition: background 0.2s ease;
   width: 100%;
 }
+
 .register-card button:hover {
   background: #0056b3;
 }
+
+/* Text below form */
 .register-card p {
   text-align: center;
   margin-top: 1.5rem;
 }
+
+/* Error messages */
+.error {
+  color: #d9534f;
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Animations */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
+
+<!-- Hero Banner -->
 <div class="hero">
   <h1>Register</h1>
   <p>Create your account and join the Voicer community!</p>
 </div>
-<div class="register-card">
-  {% if messages %}
-    <ul class="messages">
-      {% for message in messages %}
-        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+
+<!-- Registration Form Container -->
+<div class="page-container">
+  <div class="register-card">
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <h2>Register</h2>
+
+    <form method="POST" action="" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          {{ field.label_tag }}
+          {{ field }}
+          {% if field.help_text %}
+            <small class="form-text text-muted">{{ field.help_text }}</small>
+          {% endif %}
+          {% for error in field.errors %}
+            <div class="error">{{ error }}</div>
+          {% endfor %}
+        </div>
       {% endfor %}
-    </ul>
-  {% endif %}
-  <h2>Register</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-  </form>
-  <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+      <button type="submit">Register</button>
+    </form>
+
+    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+  </div>
 </div>
-{% endblock %} 
+{% endblock %}
+

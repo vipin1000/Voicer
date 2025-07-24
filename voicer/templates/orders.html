@@ -45,28 +45,16 @@
   to { opacity: 1; transform: translateY(0); }
 }
 </style>
-<div class="hero">
-  <h1>Your Orders</h1>
-  <p>Track and manage your voiceover orders easily.</p>
-</div>
-<div class="orders-list">
-  <div class="order-card">
-    <h4>Order #1001</h4>
-    <p><strong>Service:</strong> Warm British Voiceover</p>
-    <p><strong>Status:</strong> Completed</p>
-    <p><strong>Buyer:</strong> Sara</p>
+
+<div class="page-container">
+  <div class="register-card">
+    <h2>Place Order</h2>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Place Order</button>
+    </form>
   </div>
-  <div class="order-card">
-    <h4>Order #1002</h4>
-    <p><strong>Service:</strong> Commercial Promo Voice</p>
-    <p><strong>Status:</strong> In Progress</p>
-    <p><strong>Buyer:</strong> Alex</p>
-  </div>
-  <div class="order-card">
-    <h4>Order #1003</h4>
-    <p><strong>Service:</strong> Audiobook Narration</p>
-    <p><strong>Status:</strong> Pending</p>
-    <p><strong>Buyer:</strong> Jamie</p>
-  </div>
+
 </div>
 {% endblock %} 

@@ -134,15 +134,32 @@
           <span class="user-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 10a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 1 0 0 14A7 7 0 0 0 8 1z"/></svg></span>
           Menu
         </button>
+
+
+        {% if user.is_authenticated %}
         <ul class="dropdown-menu dropdown-menu-end attractive" aria-labelledby="dropdownMenuButton">
           <li><a class="dropdown-item" href="{% url 'index' %}">Home</a></li>
           <li><a class="dropdown-item" href="{% url 'discover' %}">Discover</a></li>
           <li><a class="dropdown-item" href="{% url 'orders' %}">Orders</a></li>
-          <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+          <li><a class="dropdown-item" href="{% url 'public_profile' %}">Profile</a></li>
+          <li><a class="dropdown-item" href="{% url 'chat' %}">Chat</a></li>
+          <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+          {% comment %} <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li> {% endcomment %}
+          
+         
+          {% else %}
+          <ul class="dropdown-menu dropdown-menu-end attractive" aria-labelledby="dropdownMenuButton">
+          <li><a class="dropdown-item" href="{% url 'index' %}">Home</a></li>
+          <li><a class="dropdown-item" href="{% url 'discover' %}">Discover</a></li>
+          <li><a class="dropdown-item" href="{% url 'orders' %}">Orders</a></li>
+          <li><a class="dropdown-item" href="{% url 'public_profile' %}">Profile</a></li>
           <li><a class="dropdown-item" href="{% url 'chat' %}">Chat</a></li>
           <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
           <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+          
+          {% endif %}
         </ul>
+
       </div>
     </div>
   </br>

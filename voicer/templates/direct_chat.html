@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.direct-chat-container {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  padding: 2rem 1.5rem;
+  max-width: 600px;
+  margin: 2rem auto;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  animation: fadeInUp 0.8s;
+}
+.direct-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+  max-height: 300px;
+}
+.direct-message {
+  background: #f7f7f7;
+  border-radius: 0.8rem;
+  padding: 0.7rem 1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  width: fit-content;
+  max-width: 80%;
+}
+.direct-message.me {
+  background: #007bff;
+  color: #fff;
+  margin-left: auto;
+}
+.direct-chat-input {
+  display: flex;
+  gap: 1rem;
+}
+.direct-chat-input input {
+  flex: 1;
+  border-radius: 2rem;
+  border: 1px solid #ccc;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+}
+.direct-chat-input button {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.7rem 2rem;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+.direct-chat-input button:hover {
+  background: #0056b3;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+<div class="direct-chat-container">
+  <h2>Chat with {{ other_profile.user.first_name }} {{ other_profile.user.last_name }}</h2>
+  <div class="direct-chat-messages">
+    {% for msg in messages %}
+      <div class="direct-message{% if msg.sender.user == request.user %} me{% endif %}">
+        <strong>{{ msg.sender.user.first_name }}:</strong> {{ msg.message }}
+        <div style="font-size:0.8rem; color:#888;">{{ msg.timestamp|date:"M d, H:i" }}</div>
+      </div>
+    {% empty %}
+      <div style="color:#888;">No messages yet. Start the conversation!</div>
+    {% endfor %}
+  </div>
+  <form class="direct-chat-input" method="post">
+    {% csrf_token %}
+    <input type="text" name="message" placeholder="Type your message..." required>
+    <button type="submit">Send</button>
+  </form>
+</div>
+{% endblock %} 

@@ -13,6 +13,8 @@ class UserProfile(models.Model):
     role = models.CharField(max_length=10, choices=USER_ROLES)
     bio = models.TextField(blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    audio_file = models.FileField(upload_to='audio/')
+    rate =models.BigIntegerField(default=123)
 
     def __str__(self):
         return f"{self.user.username} ({self.role})"
@@ -119,3 +121,16 @@ class Review(models.Model):
     # The person writing the review (typically the buyer).
     # 📌 Example:
     # Buyer 'sara' gives feedback on 'alex’s' voiceover service.
+
+
+# =====================
+# Direct User-to-User Chat
+# =====================
+class DirectChatMessage(models.Model):
+    sender = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='sent_direct_messages')
+    recipient = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='received_direct_messages')
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Direct message from {self.sender.user.username} to {self.recipient.user.username} at {self.timestamp}"

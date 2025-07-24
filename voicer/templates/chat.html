@@ -77,15 +77,23 @@
   <p>Connect and collaborate in real time with other users.</p>
 </div>
 <div class="chat-card">
-  <div class="chat-messages">
-    <div class="message">Hello! 👋</div>
-    <div class="message user">Hi there! How can I help you?</div>
-    <div class="message">I'm looking for a voiceover artist for my project.</div>
-    <div class="message user">Great! I can help you with that.</div>
-  </div>
-  <form class="chat-input">
-    <input type="text" placeholder="Type your message..." disabled>
-    <button type="submit" disabled>Send</button>
-  </form>
+ <!-- Place this in templates/chat.html -->
+<h2>Chat for Order #{{ order.id }} ({{ order.service.title }})</h2>
+<div>
+  {% for msg in messages %}
+    <div style="margin-bottom: 10px;">
+      <strong>{{ msg.sender.user.username }}:</strong>
+      {{ msg.message }}
+      <span style="font-size: 0.8em; color: #888;">{{ msg.timestamp|date:"Y-m-d H:i" }}</span>
+    </div>
+  {% empty %}
+    <p>No messages yet.</p>
+  {% endfor %}
+</div>
+<form method="post">
+  {% csrf_token %}
+  <textarea name="message" rows="2" style="width:100%;" placeholder="Type your message..."></textarea>
+  <button type="submit">Send</button>
+</form>
 </div>
 {% endblock %} 

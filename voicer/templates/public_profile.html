@@ -15,7 +15,7 @@
   border-radius: 1rem;
   box-shadow: 0 4px 24px rgba(0,0,0,0.10);
   padding: 2.5rem 2rem 2rem 2rem;
-  max-width: 400px;
+  max-width: 600px;
   margin: 0 auto;
   animation: fadeInUp 0.8s;
   text-align: center;
@@ -42,6 +42,22 @@
   color: #333;
   margin: 0.2rem 0;
 }
+.update-btn {
+  background: linear-gradient(120deg, #007bff 0%, #00c6ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.7rem 2.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0,123,255,0.15);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.update-btn:hover {
+  background: linear-gradient(120deg, #0056b3 0%, #00c6ff 100%);
+  box-shadow: 0 8px 24px rgba(0,123,255,0.25);
+}
 .audio-sample-section {
   margin-top: 1.5rem;
   margin-bottom: 1rem;
@@ -56,18 +72,27 @@
   width: 100%;
   margin-top: 0.5rem;
 }
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 </style>
+
 <div class="hero">
-  <h1>{{ profile.user.first_name }} {{ profile.user.last_name }}'s Profile</h1>
-  <p>See details and listen to their sample.</p>
+  <h1>Welcome, {{ profile.user.first_name }}!</h1>
+  <p>This is your personalized voiceover profile dashboard.</p>
 </div>
+
 <div class="profile-card">
-  <div class="profile-avatar">{{ profile.user.first_name|slice:':1' }}{{ profile.user.last_name|slice:':1' }}</div>
+  <div class="profile-avatar">
+    {{ profile.user.first_name|slice:":1" }}{{ profile.user.last_name|slice:":1" }}
+  </div>
   <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
   <p><strong>Username:</strong> {{ profile.user.username }}</p>
   <p><strong>Email:</strong> {{ profile.user.email }}</p>
   <p><strong>Role:</strong> {{ profile.role|title }}</p>
-  <p><strong>Bio:</strong> {{ profile.bio }}</p>
+  <p><strong>Bio:</strong> {{ profile.bio|default:"No bio added yet." }}</p>
+
   <div class="audio-sample-section">
     <label>Audio Sample</label>
     {% if profile.voiceoversample %}
@@ -79,5 +104,60 @@
       <div style="font-size:0.95rem; color:#888; margin-top:0.3rem;">No audio sample uploaded.</div>
     {% endif %}
   </div>
+
+  <button class="update-btn" data-bs-toggle="modal" data-bs-target="#updateProfileModal">Update Profile</button>
 </div>
-{% endblock %} 
+
+<!-- Update Modal -->
+<!-- Update Modal -->
+<div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateProfileModalLabel">Edit Your Profile</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" enctype="multipart/form-data" action="{% url 'update_profile' %}">
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label for="id_bio" class="form-label">Bio</label>
+            <textarea name="bio" id="id_bio" class="form-control">{{ profile.bio }}</textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_role" class="form-label">Role</label>
+            <select name="role" id="id_role" class="form-select">
+              <option value="seller" {% if profile.role == 'seller' %}selected{% endif %}>Seller</option>
+              <option value="buyer" {% if profile.role == 'buyer' %}selected{% endif %}>Buyer</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_avatar" class="form-label">Avatar</label>
+            <input type="file" name="avatar" id="id_avatar" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label for="id_voiceoversample" class="form-label">Voiceover Sample</label>
+            <input type="file" name="voiceoversample" id="id_voiceoversample" class="form-control">
+          </div>
+
+          <div class="mb-3">
+            <label for="id_rate" class="form-label">Rate (₹/min)</label>
+            <input type="number" name="rate" id="id_rate" class="form-control" value="{{ profile.rate }}">
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

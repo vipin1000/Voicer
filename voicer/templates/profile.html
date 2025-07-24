@@ -15,7 +15,7 @@
   border-radius: 1rem;
   box-shadow: 0 4px 24px rgba(0,0,0,0.10);
   padding: 2.5rem 2rem 2rem 2rem;
-  max-width: 400px;
+  max-width: 600px;
   margin: 0 auto;
   animation: fadeInUp 0.8s;
   text-align: center;
@@ -56,7 +56,6 @@
 }
 .update-btn:hover {
   background: linear-gradient(120deg, #0056b3 0%, #00c6ff 100%);
-  color: #fff;
   box-shadow: 0 8px 24px rgba(0,123,255,0.25);
 }
 .audio-sample-section {
@@ -78,65 +77,57 @@
   to { opacity: 1; transform: translateY(0); }
 }
 </style>
+
 <div class="hero">
-  <h1>Your Profile</h1>
+  <h1>{{ profile.user.first_name }} {{ profile.user.last_name }}'s Profile</h1>
   <p>Manage your account and showcase your talent.</p>
 </div>
+
 <div class="profile-card">
-  <div class="profile-avatar">A</div>
-  <h2>Alex Johnson</h2>
-  <p><strong>Username:</strong> alexj</p>
-  <p><strong>Email:</strong> alex@example.com</p>
-  <p><strong>Role:</strong> Seller</p>
-  <p><strong>Bio:</strong> British voice actor with 10 years of experience in commercials and audiobooks.</p>
-  <div class="audio-sample-section">
-    <label>Audio Sample</label>
-    <audio class="audio-sample-player" controls>
-      <source src="/media/samples/sample1.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
-    <div style="font-size:0.95rem; color:#888; margin-top:0.3rem;">Sample: Warm British Voiceover</div>
+  <div class="profile-avatar">
+    {{ profile.user.first_name|slice:":1" }}{{ profile.user.last_name|slice:":1" }}
   </div>
-  <button class="update-btn" data-bs-toggle="modal" data-bs-target="#updateProfileModal">Update Profile</button>
+  <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+  <p><strong>Username:</strong> {{ profile.user.username }}</p>
+  <p><strong>Email:</strong> {{ profile.user.email }}</p>
+  <p><strong>Role:</strong> {{ profile.role|title }}</p>
+  {% if profile.role == 'seller' %}
+    <p><strong>Rate:</strong> ₹{{ profile.rate }}</p>
+    <p><strong>Bio:</strong> {{ profile.bio }}</p>
+    <div class="audio-sample-section">
+      <label>Audio Sample</label>
+      {% if profile.audio_file %}
+        <audio class="audio-sample-player" controls>
+          <source src="{{ profile.audio_file.url }}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      {% else %}
+        <div style="font-size:0.95rem; color:#888; margin-top:0.3rem;">No audio sample uploaded.</div>
+      {% endif %}
+    </div>
+  {% else %}
+    <p><strong>Budget:</strong> ₹{{ profile.rate }}</p>
+    <p><strong>What are they looking for:</strong> {{ profile.bio }}</p>
+  {% endif %}
+  <a href="{% url 'direct_chat' profile.user.id %}" class="update-btn" style="margin-top: 2.5rem; display: inline-block;">Chat</a>
 </div>
-<!-- Update Profile Modal -->
+
+{% comment %} <!-- Update Modal -->
 <div class="modal fade" id="updateProfileModal" tabindex="-1" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="updateProfileModalLabel">Update Profile</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="mb-3">
-            <label for="voiceover" class="form-label">Voiceover Title</label>
-            <input type="text" class="form-control" id="voiceover" placeholder="e.g. Warm British Voiceover">
-          </div>
-          <div class="mb-3">
-            <label for="accent" class="form-label">Accent</label>
-            <input type="text" class="form-control" id="accent" placeholder="e.g. British, American, Australian">
-          </div>
-          <div class="mb-3">
-            <label for="language" class="form-label">Language</label>
-            <input type="text" class="form-control" id="language" placeholder="e.g. English, Spanish">
-          </div>
-          <div class="mb-3">
-            <label for="tones" class="form-label">Tones</label>
-            <input type="text" class="form-control" id="tones" placeholder="e.g. Warm, Energetic, Calm">
-          </div>
-          <div class="mb-3">
-            <label for="price" class="form-label">Price per Minute ($)</label>
-            <input type="number" class="form-control" id="price" placeholder="e.g. 25">
-          </div>
-          <div class="mb-3">
-            <label for="audioSample" class="form-label">Audio Sample (mp3)</label>
-            <input type="file" class="form-control" id="audioSample" accept="audio/*">
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Save Changes</button>
-        </form>
+      </div> {% endcomment %}
+      {% comment %} <div class="modal-body">
+        <form method="POST" enctype="multipart/form-data" action="{% url 'update_profile' %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          {% comment %} <button type="submit" class="btn btn-primary w-100">Save Changes</button> {% endcomment %}
+        {% comment "" %}</form>
       </div>
     </div>
   </div>
-</div>
-{% endblock %} 
+</div> {% endcomment %}
+{% endblock %}

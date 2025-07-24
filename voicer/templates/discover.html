@@ -116,10 +116,13 @@
   <button class="discover-btn" id="show-buyers">Buyers</button>
 </div>
 <div id="sellers-list" class="scrollable-list visible">
-  {% for people in sellers %}
-    <a href="{% url 'public_profile' people.id %}" class="profile-link">
+ {% for people in sellers %}
+  {% if people and people.id %}
+    <a href="{% url 'profile' people.id %}" class="profile-link">
       <div class="profile-card">
-        <div class="profile-avatar">{{ people.user.first_name|slice:":1" }}{{ people.user.last_name|slice:":1" }}</div>
+        <div class="profile-avatar">
+          {{ people.user.first_name|slice:":1" }}{{ people.user.last_name|slice:":1" }}
+        </div>
         <div class="profile-info">
           <h4>{{ people.user.first_name }} {{ people.user.last_name }}</h4>
           <p><strong>Username:</strong> {{ people.user.username }}</p>
@@ -128,20 +131,23 @@
         </div>
       </div>
     </a>
-  {% empty %}
-    <p>No sellers found.</p>
-  {% endfor %}
+  {% endif %}
+{% empty %}
+  <p>No sellers found.</p>
+{% endfor %}
 </div>
 <div id="buyers-list" class="scrollable-list" style="display:none;">
   {% for people in buyers %}
-    <a href="{% url 'public_profile' people.id %}" class="profile-link">
-      <div class="profile-card">
-        <div class="profile-avatar">{{ people.user.first_name|slice:":1" }}{{ people.user.last_name|slice:":1" }}</div>
-        <div class="profile-info">
-          <h4>{{ people.user.first_name }} {{ people.user.last_name }}</h4>
-          <p><strong>Username:</strong> {{ people.user.username }}</p>
-          <p><strong>Email:</strong> {{ people.user.email }}</p>
-          <p>{{ people.bio }}</p>
+  <a href="{% url 'profile' people.id %}" class="profile-link">
+    <div class="profile-card">
+      <div class="profile-avatar">
+        {{ people.user.first_name|slice:":1" }}{{ people.user.last_name|slice:":1" }}
+      </div>
+      <div class="profile-info">
+        <h4>{{ people.user.first_name }} {{ people.user.last_name }}</h4>
+        <p><strong>Username:</strong> {{ people.user.username }}</p>
+        <p><strong>Email:</strong> {{ people.user.email }}</p>
+        <p>{{ people.bio }}</p>
         </div>
       </div>
     </a>
